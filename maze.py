@@ -50,3 +50,25 @@ def generate_maze(w, h, seed):
             current_cell = stack.pop()
 
     return maze, w, h
+
+
+def convert_to_displayable(maze, w, h, empty, wall):
+    maze_displayable = [[empty for x in range(2 * w + 1)] for y in range(2 * h + 1)]
+
+    for x in range(0, 2 * w + 1):
+        maze_displayable[0][x] = wall
+    for y in range(0, 2 * h + 1):
+        maze_displayable[y][0] = wall
+
+    for y in range(0, h):
+        for x in range(0, w):
+            maze_displayable[2 * y + 1][2 * x + 1] = empty
+
+            if maze[y][x].wallS == 1:
+                maze_displayable[2 * y + 2][2 * x + 1] = wall
+                maze_displayable[2 * y + 2][2 * x + 2] = wall
+            if maze[y][x].wallE == 1:
+                maze_displayable[2 * y + 1][2 * x + 2] = wall
+                maze_displayable[2 * y + 2][2 * x + 2] = wall
+
+    return maze_displayable, 2 * w + 1, 2 * h + 1

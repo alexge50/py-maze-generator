@@ -5,28 +5,7 @@ import random
 import sys, getopt
 
 
-def print_maze(stdscr, maze, w, h):
-    wall = '█'
-    empty = ' '
-
-    maze_displayable = [[empty for x in range(2 * w + 1)] for y in range(2 * h + 1)]
-
-    for x in range(0, 2 * w + 1):
-        maze_displayable[0][x] = wall
-    for y in range(0, 2 * h + 1):
-        maze_displayable[y][0] = wall
-
-    for y in range(0, h):
-        for x in range(0, w):
-            maze_displayable[2 * y + 1][2 * x + 1] = empty
-
-            if maze[y][x].wallS == 1:
-                maze_displayable[2 * y + 2][2 * x + 1] = wall
-                maze_displayable[2 * y + 2][2 * x + 2] = wall
-            if maze[y][x].wallE == 1:
-                maze_displayable[2 * y + 1][2 * x + 2] = wall
-                maze_displayable[2 * y + 2][2 * x + 2] = wall
-
+def print_maze(stdscr, maze_displayable, w, h):
     line = 0
 
     for y in maze_displayable:
@@ -48,15 +27,20 @@ def main(stdscr):
         seed = random.SystemRandom().randint(0, sys.maxsize)
 
     _maze, w, h = maze.generate_maze(int((x - 1) / 2), int((y - 1) / 2), 150)
+    _maze, w, h = maze.convert_to_displayable(_maze, w, h, ' ', '█')
 
     curses.flash()
     stdscr.scrollok(True)
-    curses.init_pair(1, curses.COLOR_RED, curses.COLOR_WHITE)
+    curses.init_pair(1, curses.COLOR_BLACK, curses.COLOR_WHITE)
+    curses.init_pair(2, curses.COLOR_GREEN, curses.COLOR_WHITE)
 
     print_maze(stdscr, _maze, w, h)
-    stdscr.refresh()
 
-    stdscr.addstr(y - 1, 0, "seed: {}".format(seed), curses.color_pair(0))
+    for _x in range(0, x - 1):
+        stdscr.addstr(y - 1, _x, " ", curses.color_pair(2))
+    stdscr.addstr(y - 1, 0, "seed: {}".format(seed), curses.color_pair(2))
+
+    stdscr.refresh()
 
     exit_flag = 0
     while exit_flag == 0:
