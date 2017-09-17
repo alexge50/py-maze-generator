@@ -100,7 +100,9 @@ def get_solution(maze_displayable, empty, wall, startx, endx):
     def dfs(maze_displayable, steps, empty, wall):
         p = steps[len(steps) - 1]
         if maze_displayable[p.y][p.x] == 'E':
-            return steps, 1
+            rsteps = []
+            rsteps.extend(steps)
+            return rsteps, 1
         else:
             visited[p.y][p.x] = 1
 
@@ -110,14 +112,16 @@ def get_solution(maze_displayable, empty, wall, startx, endx):
             for i in range(0, 4):
                 p2 = point(p.x + xdir[i], p.y + ydir[i])
                 if maze_displayable[p2.y][p2.x] is not wall and visited[p2.y][p2.x] == 0:
-                    steps2 = steps
-                    steps2.append(p2)
-                    rsteps, success = dfs(maze_displayable, steps2, empty, wall)
+                    steps.append(p2)
+                    rsteps, success = dfs(maze_displayable, steps, empty, wall)
+                    steps.pop()
 
                     if success == 1:
                         return rsteps, success
             return [], 0
 
     steps, success = dfs(maze_displayable, [point(startx, 1)], empty, wall)
+
+    maze_displayable[h - 2][endx] = ' '
 
     return steps
