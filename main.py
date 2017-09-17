@@ -1,5 +1,6 @@
 import maze
 import curses
+import random
 
 import sys, getopt
 
@@ -38,14 +39,13 @@ def print_maze(stdscr, maze, w, h):
 
 seed = None
 
-
 def main(stdscr):
     y, x = stdscr.getmaxyx()
 
     global seed
 
     if seed is None:
-        seed = 10
+        seed = random.SystemRandom().randint(0, sys.maxsize)
 
     _maze, w, h = maze.generate_maze(int((x - 1) / 2), int((y - 1) / 2), 150)
 
@@ -65,7 +65,7 @@ def main(stdscr):
 
 
 try:
-    opts, args = getopt.getopt(sys.argv, "s:", ["seed="])
+    opts, args = getopt.getopt(sys.argv[1:], "s:", ["seed="])
 except getopt.GetoptError:
     print("main.py -s <number>")
     sys.exit(2)
@@ -73,6 +73,6 @@ except getopt.GetoptError:
 for opt, arg in opts:
     if opt in ("-s", "--seed"):
         global seed
-        seed = int(args)
+        seed = int(arg)
 
 curses.wrapper(main)
