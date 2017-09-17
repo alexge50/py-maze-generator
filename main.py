@@ -16,7 +16,7 @@ def print_maze(stdscr, maze_displayable, w, h, startx, endx, steps):
         line = line + 1
 
     for step in steps:
-        stdscr.addstr(step.y, stepq.x, " ", curses.color_pair(3))
+        stdscr.addstr(step.y, step.x, " ", curses.color_pair(3))
 
     stdscr.addstr(1, startx, "S", curses.color_pair(3))
     stdscr.addstr(h - 2, endx, "E", curses.color_pair(4))
