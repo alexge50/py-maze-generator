@@ -33,7 +33,7 @@ def main(stdscr):
     if seed is None:
         seed = random.SystemRandom().randint(0, sys.maxsize)
 
-    _maze, w, h = maze.generate_maze(int((x - 1) / 2), int((y - 1) / 2), 150)
+    _maze, w, h = maze.generate_maze(int((x - 1) / 2), int((y - 1) / 2), seed)
     _maze, w, h = maze.convert_to_displayable(_maze, w, h, ' ', '█')
     startx, endx = maze.generate_points(_maze, ' ', '█')
     steps = maze.get_solution(_maze, ' ', '█', startx, endx)
