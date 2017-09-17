@@ -1,30 +1,27 @@
 import random
 from collections import namedtuple
 
-cell = namedtuple("cell", "x y wallE wallS")
-
-
-def get_neighbors(current_cell, w, h, visited):
-    xdir = [0, 0, -1, +1]
-    ydir = [-1, +1, 0, 0]
-
-    neighbors = []
-
-    for i in range(0, 4):
-        x = current_cell.x + xdir[i]
-        y = current_cell.y + ydir[i]
-        if 0 <= x < w and 0 <= y < h and visited[y][x] == 0:
-            neighbors.append(cell(x, y, 1, 1))
-
-    return neighbors
-
 
 def generate_maze(w, h, seed):
+    cell = namedtuple("cell", "x y wallE wallS")
+
+    def get_neighbors(current_cell, w, h, visited):
+        xdir = [0, 0, -1, +1]
+        ydir = [-1, +1, 0, 0]
+
+        neighbors = []
+
+        for i in range(0, 4):
+            x = current_cell.x + xdir[i]
+            y = current_cell.y + ydir[i]
+            if (0 <= x < w and 0 <= y < h) and visited[y][x] == 0:
+                neighbors.append(cell(x, y, 1, 1))
+
+        return neighbors
+
     maze = [[cell(0, 0, 1, 1) for x in range(0, w)] for y in range(0, h)]
     visited = [[0 for x in range(0, w)] for y in range(0, h)]
     stack = []
-
-    number_cells_to_visit = w * h
 
     random.seed(seed)
     current_cell = cell(random.randint(0, w), random.randint(0, h), 1, 1)
