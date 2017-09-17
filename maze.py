@@ -85,3 +85,39 @@ def generate_points(maze_displayable, empty, wall):
         endx = random.randint(0, len(maze_displayable[len(maze_displayable) - 2]) - 1)
 
     return startx, endx
+
+
+def get_solution(maze_displayable, empty, wall, startx, endx):
+    point = namedtuple("point", "x y")
+
+    w = len(maze_displayable[0])
+    h = len(maze_displayable)
+
+    maze_displayable[h - 2][endx] = 'E'
+
+    visited = [[0 for x in range(0, w)] for y in range(0, h)]
+
+    def dfs(maze_displayable, steps, empty, wall):
+        p = steps[len(steps) - 1]
+        if maze_displayable[p.y][p.x] == 'E':
+            return steps, 1
+        else:
+            visited[p.y][p.x] = 1
+
+            xdir = [0, 0, -1, +1]
+            ydir = [-1, +1, 0, 0]
+
+            for i in range(0, 4):
+                p2 = point(p.x + xdir[i], p.y + ydir[i])
+                if maze_displayable[p2.y][p2.x] is not wall and visited[p2.y][p2.x] == 0:
+                    steps2 = steps
+                    steps2.append(p2)
+                    rsteps, success = dfs(maze_displayable, steps2, empty, wall)
+
+                    if success == 1:
+                        return rsteps, success
+            return [], 0
+
+    steps, success = dfs(maze_displayable, [point(startx, 1)], empty, wall)
+
+    return steps
