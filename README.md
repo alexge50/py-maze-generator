@@ -11,5 +11,5 @@ The only argument available is `-s`/`--seed` that takes a number. This option se
 This script should be run in terminal. The width and height of the maze is are calculated from the size of the terminal.   
 In order to exit from the script, the user should press `q`. There isn't any other way to interact with the script.
 
-##bugs  
+## bugs  
 When the solution is generated, some branches are included as being part of the solution.
