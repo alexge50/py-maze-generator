@@ -72,3 +72,16 @@ def convert_to_displayable(maze, w, h, empty, wall):
                 maze_displayable[2 * y + 2][2 * x + 2] = wall
 
     return maze_displayable, 2 * w + 1, 2 * h + 1
+
+
+def generate_points(maze_displayable, empty, wall):
+    startx = 0
+    endx = 0
+
+    while (maze_displayable[1][startx] == wall):
+        startx = random.randint(0, len(maze_displayable[1]) - 1)
+
+    while (maze_displayable[len(maze_displayable) - 2][endx] == wall):
+        endx = random.randint(0, len(maze_displayable[len(maze_displayable) - 2]) - 1)
+
+    return startx, endx
